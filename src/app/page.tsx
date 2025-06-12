@@ -1,7 +1,6 @@
 import { getPopularSeries, getTopRatedMovies, getTrendingMovies } from "@/lib/tmdb";
 import ContentCard from "@/components/ContentCard";
 import Section from "@/components/Section";
-import Image from "next/image";
 import Link from "next/link";
 import DynamicHeroBackground from "@/components/DynamicHeroBackground";
 
@@ -24,7 +23,7 @@ export default async function HomePage() {
             Discover Your Next Obsession
           </h1>
           <p className="text-xl sm:text-2xl text-gray-100/95 mb-12 max-w-2xl mx-auto drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)] font-light leading-relaxed animate-fade-in-up" style={{animationDelay: '0.2s'}}>
-            Explore millions of movies and TV shows. Find what captivates you next.
+            Explore thousands of movies and TV shows. Find what captivates you next.
           </p>
           
           {/* Featured action buttons */}
@@ -45,29 +44,22 @@ export default async function HomePage() {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Section title="🔥 Trending This Week">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-4 md:gap-6">
-            {trendingMovies.slice(0,14).map((movie) => (
-              <ContentCard key={movie.id} item={movie} type="movie" />
-            ))}
-          </div>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">        <Section title="Trending This Week">
+          {trendingMovies.slice(0,14).map((movie) => (
+            <ContentCard key={movie.id} item={movie} type="movie" />
+          ))}
         </Section>
 
-        <Section title="📺 Popular TV Shows">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-4 md:gap-6">
-            {popularSeries.slice(0,14).map((series) => (
-              <ContentCard key={series.id} item={series} type="tv" />
-            ))}
-          </div>
+        <Section title="Popular TV Shows">
+          {popularSeries.slice(0,14).map((series) => (
+            <ContentCard key={series.id} item={series} type="tv" />
+          ))}
         </Section>
-        
-        <Section title="⭐ Top Rated Movies">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-4 md:gap-6">
-            {topRatedMovies.slice(0,14).map((movie) => (
-              <ContentCard key={movie.id} item={movie} type="movie" />
-            ))}
-          </div>
+
+        <Section title="Top Rated Movies">
+          {topRatedMovies.slice(0,14).map((movie) => (
+            <ContentCard key={movie.id} item={movie} type="movie" />
+          ))}
         </Section>
       </div>
     </>
