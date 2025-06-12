@@ -5,9 +5,6 @@
   "framework": "nextjs",
   "outputDirectory": ".next",
   "regions": ["iad1"],
-  "env": {
-    "TMDB_API_KEY": "@tmdb-api-key"
-  },
   "headers": [
     {
       "source": "/api/(.*)",
