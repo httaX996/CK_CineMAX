@@ -2,19 +2,70 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import SearchSuggestions from './SearchSuggestions';
 
 export default function Navbar() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
+  const mobileSearchRef = useRef<HTMLDivElement>(null);
 
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
       setSearchQuery('');
+      setShowSuggestions(false);
+      setIsFocused(false);
     }
   };
+
+  const handleSuggestionSelect = () => {
+    setSearchQuery('');
+    setShowSuggestions(false);
+    setIsFocused(false);
+  };
+
+  const handleInputChange = (value: string) => {
+    setSearchQuery(value);
+    setShowSuggestions(value.trim().length >= 2);
+  };
+
+  const handleInputFocus = () => {
+    setIsFocused(true);
+    if (searchQuery.trim().length >= 2) {
+      setShowSuggestions(true);
+    }
+  };
+
+  const handleInputBlur = () => {
+    // Delay hiding suggestions to allow clicking on them
+    setTimeout(() => {
+      setIsFocused(false);
+      setShowSuggestions(false);
+    }, 150);
+  };
+
+  // Close suggestions when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        searchRef.current && 
+        !searchRef.current.contains(event.target as Node) &&
+        mobileSearchRef.current &&
+        !mobileSearchRef.current.contains(event.target as Node)
+      ) {
+        setShowSuggestions(false);
+        setIsFocused(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   return (
     <nav className="glass sticky top-0 z-50 border-b border-gray-700/50 shadow-2xl">
@@ -37,20 +88,31 @@ export default function Navbar() {
 
           {/* Centered Search Bar (Desktop) */}
           <div className="hidden md:flex flex-1 items-center justify-center px-4 lg:px-8">
-            <form onSubmit={handleSearchSubmit} className="relative w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search movies, TV shows..."
-                className="w-full px-4 py-3 rounded-xl glass text-white placeholder-gray-300 focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none transition-all duration-300 text-sm shadow-lg focus:shadow-amber-500/25 pl-12 backdrop-blur-sm"
+            <div ref={searchRef} className="relative w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl">
+              <form onSubmit={handleSearchSubmit}>
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => handleInputChange(e.target.value)}
+                  onFocus={handleInputFocus}
+                  onBlur={handleInputBlur}
+                  placeholder="Search movies, TV shows..."
+                  className="w-full px-4 py-3 rounded-xl glass text-white placeholder-gray-300 focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none transition-all duration-300 text-sm shadow-lg focus:shadow-amber-500/25 pl-12 backdrop-blur-sm"
+                />
+                <button type="submit" className="absolute left-4 top-1/2 -translate-y-1/2 p-1 text-gray-300 hover:text-amber-400 transition-all duration-300 hover:scale-110" aria-label="Search">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                  </svg>
+                </button>
+              </form>
+              
+              <SearchSuggestions
+                query={searchQuery}
+                onSelect={handleSuggestionSelect}
+                onClose={() => setShowSuggestions(false)}
+                isVisible={showSuggestions && isFocused}
               />
-              <button type="submit" className="absolute left-4 top-1/2 -translate-y-1/2 p-1 text-gray-300 hover:text-amber-400 transition-all duration-300 hover:scale-110" aria-label="Search">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                </svg>
-              </button>
-            </form>
+            </div>
           </div>
 
           {/* Navigation Links (Right side) */}
@@ -65,22 +127,33 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Search Form */}
-        <form onSubmit={handleSearchSubmit} className="md:hidden pt-3 pb-4 border-t border-gray-700/30">
-          <div className="relative">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search movies or TV shows..."
-              className="w-full p-4 pl-12 rounded-xl glass text-white placeholder-gray-300 focus:ring-2 focus:ring-amber-500/50 outline-none transition-all duration-300 text-sm shadow-lg"
-            />
-            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                </svg>
+        <div ref={mobileSearchRef} className="md:hidden pt-3 pb-4 border-t border-gray-700/30 relative">
+          <form onSubmit={handleSearchSubmit}>
+            <div className="relative">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => handleInputChange(e.target.value)}
+                onFocus={handleInputFocus}
+                onBlur={handleInputBlur}
+                placeholder="Search movies or TV shows..."
+                className="w-full p-4 pl-12 rounded-xl glass text-white placeholder-gray-300 focus:ring-2 focus:ring-amber-500/50 outline-none transition-all duration-300 text-sm shadow-lg"
+              />
+              <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                  </svg>
+              </div>
             </div>
-          </div>
-        </form>
+          </form>
+          
+          <SearchSuggestions
+            query={searchQuery}
+            onSelect={handleSuggestionSelect}
+            onClose={() => setShowSuggestions(false)}
+            isVisible={showSuggestions && isFocused}
+          />
+        </div>
       </div>
     </nav>
   );
