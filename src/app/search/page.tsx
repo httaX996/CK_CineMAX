@@ -1,12 +1,12 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { Movie, Series } from '@/lib/types';
 import ContentCard from '@/components/ContentCard';
 import Section from '@/components/Section';
 
-export default function SearchPage() {
+function SearchContent() {
   const searchParams = useSearchParams();
   const query = searchParams.get('q');
   const [results, setResults] = useState<(Movie | Series)[]>([]);
@@ -103,14 +103,14 @@ export default function SearchPage() {
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <Section title={results.length > 0 ? `🎯 Results for "${query}"` : `😔 No Results for "${query}"`}>
+      <Section title={results.length > 0 ? `Results for "${query}"` : `No Results for "${query}"`}>
         {results.length > 0 ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-4 md:gap-6">
+          <>
             {results.map(item => {
               const type = (item as Movie).title ? 'movie' : 'tv';
               return <ContentCard key={`${type}-${item.id}`} item={item} type={type} />;
             })}
-          </div>
+          </>
         ) : (
           <div className="text-center py-16">
             <div className="glass rounded-3xl p-12 max-w-md mx-auto">
@@ -120,11 +120,35 @@ export default function SearchPage() {
                 </svg>
               </div>
               <p className="text-xl font-semibold text-gray-300 mb-3">No matches found</p>
-              <p className="text-gray-400 leading-relaxed">We couldn't find any movies or TV shows matching "{query}". Try checking your spelling or searching for something else.</p>
+              <p className="text-gray-400 leading-relaxed">We couldn&apos;t find any movies or TV shows matching &quot;{query}&quot;. Try checking your spelling or searching for something else.</p>
             </div>
           </div>
         )}
       </Section>
     </div>
+  );
+}
+
+function SearchPageLoading() {
+  return (
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center flex flex-col items-center justify-center min-h-[calc(100vh-10rem)]">
+      <div className="glass rounded-3xl p-12 max-w-md mx-auto">
+        <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center animate-pulse">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-10 h-10 text-gray-900">
+            <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+          </svg>
+        </div>
+        <h1 className="text-3xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent mb-4">Loading Search...</h1>
+        <p className="text-gray-400 leading-relaxed">Preparing your search experience.</p>
+      </div>
+    </div>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={<SearchPageLoading />}>
+      <SearchContent />
+    </Suspense>
   );
 }
