@@ -12,8 +12,11 @@ export default function ContentCard({ item, type }: ContentCardProps) {
   const releaseDate = type === 'movie' ? (item as Movie).release_date : (item as Series).first_air_date;
   const year = releaseDate ? new Date(releaseDate).getFullYear() : 'N/A';
 
+  // Ensure URL uses correct plural form for movies
+  const baseUrl = type === 'movie' ? '/movies' : '/tv';
+
   return (
-    <Link href={`/${type}/${item.id}`} className="block group">
+    <Link href={`${baseUrl}/${item.id}`} className="block group">
       <div className="glass rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl hover:shadow-amber-500/20 transition-all duration-500 ease-out transform hover:-translate-y-2 hover:scale-105 border border-gray-700/50 hover:border-amber-500/30 animate-fade-in-up">
         <div className="relative aspect-[2/3] overflow-hidden">
           {item.poster_path ? (
