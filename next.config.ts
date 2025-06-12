@@ -21,19 +21,36 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['lucide-react'],
   },
-  // Configure headers for iframe embedding
+  // Configure headers for iframe embedding and security
   async headers() {
     return [
       {
-        source: '/watch/:path*',
+        source: '/(.*)',
         headers: [
           {
-            key: 'X-Frame-Options',
-            value: 'SAMEORIGIN',
+            key: 'Content-Security-Policy',
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+              "style-src 'self' 'unsafe-inline'",
+              "img-src 'self' data: https://image.tmdb.org",
+              "font-src 'self' data:",
+              "connect-src 'self' https://api.themoviedb.org",
+              "frame-src 'self' https://player.videasy.net https://*.videasy.net",
+              "media-src 'self' https://player.videasy.net https://*.videasy.net",
+              "object-src 'none'",
+              "base-uri 'self'",
+              "form-action 'self'",
+              "frame-ancestors 'none'"
+            ].join('; ')
           },
           {
-            key: 'Content-Security-Policy',
-            value: "frame-src 'self' https://player.videasy.net https://www.youtube.com;",
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
           },
         ],
       },
