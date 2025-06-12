@@ -1,4 +1,4 @@
-import Navbar from "@/components/Navbar";
+import LayoutWrapper from "@/components/LayoutWrapper";
 import "./globals.css";
 import { Inter } from "next/font/google";
 
@@ -26,29 +26,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={`${inter.className} bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-gray-100 antialiased min-h-screen`}>
-        <Navbar />
-        <main className="min-h-screen relative">
-          {/* Background pattern */}
-          <div
-            className="absolute inset-0 opacity-[0.02]"
-            style={{
-              backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.5) 1px, transparent 0)`,
-              backgroundSize: "24px 24px",
-            }}
-          ></div>
-          <div className="relative z-10">{children}</div>
-        </main>
-        <footer className="relative z-10 text-center py-12 border-t border-gray-700/30 glass">
-          <div className="container mx-auto px-4">
-            <p className="text-gray-400 mb-2">
-              &copy; {new Date().getFullYear()} Flixora. All rights reserved.
-            </p>
-            <p className="text-gray-500 text-sm">
-              Powered by{" "}
-              <span className="text-amber-400 font-semibold">TMDB</span>
-            </p>
-          </div>
-        </footer>
+        <LayoutWrapper>
+          {children}
+        </LayoutWrapper>
       </body>
     </html>
   );
