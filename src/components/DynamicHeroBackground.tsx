@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import Image from 'next/image';
+import OptimizedImage from './OptimizedImage';
 import { Movie } from '@/lib/types';
 
 interface DynamicHeroBackgroundProps {
@@ -53,15 +53,24 @@ const DynamicHeroBackground: React.FC<DynamicHeroBackgroundProps> = ({ movies })
   const currentMovie = validMovies[currentIndex];
 
   return (
-    <Image
-      key={currentMovie.id} // Key change helps Next.js manage the component lifecycle for transitions
-      src={`https://image.tmdb.org/t/p/original${currentMovie.poster_path}`}
-      alt={`Background for ${currentMovie.title}`}
-      fill
-      priority={currentIndex === 0} // Prioritize loading for the very first image displayed
-      className="object-cover object-center scale-105 blur-sm transition-opacity duration-1000 ease-in-out"
-      style={{ opacity: imageOpacity * 0.3 }} // Base opacity is 0.3, imageOpacity handles the fade (0 to 1)
-    />
+    <div className="absolute inset-0 w-full h-full">
+      <OptimizedImage
+        key={currentMovie.id}
+        src={`https://image.tmdb.org/t/p/w780${currentMovie.poster_path}`}
+        alt={`Background for ${currentMovie.title}`}
+        className="object-cover object-center w-full h-full scale-105 blur-sm hero-blur transition-opacity duration-1000 ease-in-out"
+        priority={currentIndex === 0}
+        width={780}
+        height={1170}
+      />
+      <div 
+        className="absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out"
+        style={{ 
+          opacity: imageOpacity * 0.3,
+          backgroundColor: imageOpacity < 1 ? 'rgba(31, 41, 55, 0.7)' : 'transparent'
+        }}
+      />
+    </div>
   );
 };
 
