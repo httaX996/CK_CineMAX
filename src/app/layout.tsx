@@ -1,4 +1,5 @@
 import LayoutWrapper from "@/components/LayoutWrapper";
+import PerformanceOptimizer from "@/components/PerformanceOptimizer";
 import "./globals.css";
 import { Inter } from "next/font/google";
 
@@ -26,6 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={`${inter.className} bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-gray-100 antialiased min-h-screen`}>
+        <PerformanceOptimizer />
         <LayoutWrapper>
           {children}
         </LayoutWrapper>
