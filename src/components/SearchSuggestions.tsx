@@ -1,6 +1,6 @@
 'use client';
 
-import Image from 'next/image';
+import OptimizedImage from './OptimizedImage';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
@@ -78,12 +78,12 @@ export default function SearchSuggestions({ query, onSelect, onClose, isVisible 
               >
                 <div className="relative w-12 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-gray-800">
                   {suggestion.poster_path ? (
-                    <Image
+                    <OptimizedImage
                       src={`https://image.tmdb.org/t/p/w92${suggestion.poster_path}`}
                       alt={suggestion.title}
-                      fill
-                      className="object-cover"
-                      sizes="48px"
+                      className="object-cover w-full h-full"
+                      width={92}
+                      height={138}
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-700 to-gray-800">
