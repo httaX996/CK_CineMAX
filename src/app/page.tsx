@@ -44,9 +44,15 @@ export default async function HomePage() {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">        <Section title="Trending This Week">
-          {trendingMovies.slice(0,14).map((movie) => (
-            <ContentCard key={movie.id} item={movie} type="movie" />
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <Section title="Trending This Week">
+          {trendingMovies.slice(0,14).map((movie, index) => (
+            <ContentCard 
+              key={movie.id} 
+              item={movie} 
+              type="movie" 
+              priority={index < 4} // Only first 4 items get priority
+            />
           ))}
         </Section>
 
