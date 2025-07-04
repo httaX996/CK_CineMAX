@@ -2,6 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
+    // Disable optimization for TMDB images to save Vercel transformations
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",
@@ -33,7 +35,7 @@ const nextConfig: NextConfig = {
               "default-src 'self'",
               "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
               "style-src 'self' 'unsafe-inline'",
-              "img-src 'self' data: https://image.tmdb.org",
+              "img-src 'self' data: https: http:",
               "font-src 'self' data:",
               "connect-src 'self' https://api.themoviedb.org",
               "frame-src 'self' https://player.videasy.net https://*.videasy.net",
