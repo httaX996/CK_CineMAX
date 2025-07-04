@@ -1,6 +1,6 @@
 import { getTVShowDetails } from '@/lib/tmdb';
 import { TVShowDetails, CastMember, Video, Genre, ProductionCompany, CreatedBy, Season, Network } from '@/lib/types';
-import Image from 'next/image';
+import OptimizedImage from '@/components/OptimizedImage';
 import Link from 'next/link';
 
 interface TVShowDetailsPageProps {
@@ -25,9 +25,9 @@ export default async function TVShowDetailsPage({ params }: TVShowDetailsPagePro
         <div className="min-h-screen bg-gray-900 text-white">
             {/* Hero Section with Background Image */}
             <div
-                className="relative h-[60vh] md:h-[70vh] bg-cover bg-center bg-no-repeat"
+                className="relative h-[50vh] md:h-[70vh] bg-cover bg-center bg-no-repeat"
                 style={{
-                    backgroundImage: `linear-gradient(to bottom, rgba(17, 24, 39, 0.5), rgba(17, 24, 39, 1)), url(https://image.tmdb.org/t/p/original${show.backdrop_path})`,
+                    backgroundImage: `linear-gradient(to bottom, rgba(17, 24, 39, 0.5), rgba(17, 24, 39, 1)), url(https://image.tmdb.org/t/p/w1280${show.backdrop_path})`,
                 }}
             >
                 <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-12">
@@ -98,7 +98,7 @@ export default async function TVShowDetailsPage({ params }: TVShowDetailsPagePro
                                             <div className="glass rounded-xl overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-amber-500/20 transition-all duration-500 ease-out transform hover:-translate-y-2 hover:scale-105 border border-gray-700/50 hover:border-amber-500/30">
                                                 <div className="relative aspect-[2/3] overflow-hidden">
                                                     {season.poster_path ? (
-                                                        <Image
+                                                        <OptimizedImage
                                                             src={`https://image.tmdb.org/t/p/w300${season.poster_path}`}
                                                             alt={season.name}
                                                             width={300}
@@ -160,22 +160,6 @@ export default async function TVShowDetailsPage({ params }: TVShowDetailsPagePro
                             <p className="text-base">{show.overview}</p>
                         </div>
 
-                        {/* Trailer Section - if not in hero or for smaller screens */}
-                        {trailer && (
-                            <div className="mt-8 md:hidden">
-                                <h3 className="text-2xl font-semibold mb-4">Watch Trailer</h3>
-                                <div className="aspect-video">
-                                    <iframe
-                                        src={`https://www.youtube.com/embed/${trailer.key}`}
-                                        title={trailer.name}
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                        allowFullScreen
-                                        className="w-full h-full rounded-lg"
-                                    ></iframe>
-                                </div>
-                            </div>
-                        )}
-
                         {/* Seasons and Episodes can be added here if desired */}
                     </div>
 
@@ -208,7 +192,7 @@ export default async function TVShowDetailsPage({ params }: TVShowDetailsPagePro
                                     {show.networks.map((network: Network) => (
                                         network.logo_path ? (
                                             <div key={network.id} className="flex items-center gap-1.5 px-2 py-1 bg-gray-800 rounded-md hover:bg-gray-700 transition-colors" title={network.name}>
-                                                <Image
+                                                <OptimizedImage
                                                     src={`https://image.tmdb.org/t/p/w92${network.logo_path}`}
                                                     alt={network.name}
                                                     width={20}
@@ -235,7 +219,7 @@ export default async function TVShowDetailsPage({ params }: TVShowDetailsPagePro
                                     {show.production_companies.map((company: ProductionCompany) => (
                                         company.logo_path ? (
                                             <div key={company.id} className="flex items-center gap-1.5 px-2 py-1 bg-gray-800 rounded-md hover:bg-gray-700 transition-colors" title={company.name}>
-                                                <Image
+                                                <OptimizedImage
                                                     src={`https://image.tmdb.org/t/p/w92${company.logo_path}`}
                                                     alt={company.name}
                                                     width={20}
@@ -310,17 +294,20 @@ export default async function TVShowDetailsPage({ params }: TVShowDetailsPagePro
                         {show.credits.cast && show.credits.cast.length > 0 && (
                             <div className="mb-6">
                                 <h3 className="text-xl font-semibold mb-3">Top Cast</h3>
-                                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                                    {show.credits.cast.slice(0, 12).map((actor: CastMember) => (
+                                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                                    {show.credits.cast.slice(0, 10).map((actor: CastMember) => (
                                         <div key={actor.credit_id} className="text-center">
                                             {actor.profile_path ? (
-                                                <Image
-                                                    src={`https://image.tmdb.org/t/p/w185${actor.profile_path}`}
-                                                    alt={actor.name}
-                                                    width={100}
-                                                    height={150}
-                                                    className="rounded-lg mx-auto mb-1 object-cover"
-                                                />
+                                                <div className="w-[100px] h-[150px] mx-auto mb-1">
+                                                    <OptimizedImage
+                                                        src={`https://image.tmdb.org/t/p/w185${actor.profile_path}`}
+                                                        alt={actor.name}
+                                                        width={185}
+                                                        height={278}
+                                                        className="rounded-lg"
+                                                        aspectRatio="2/3"
+                                                    />
+                                                </div>
                                             ) : (
                                                 <div className="w-[100px] h-[150px] bg-gray-700 rounded-lg mx-auto flex items-center justify-center mb-1">
                                                     <span className="text-xs text-gray-400">No Image</span>
