@@ -1,6 +1,6 @@
 import { getMovieDetails } from '@/lib/tmdb';
 import { MovieDetails, CastMember, CrewMember, Video, Genre, ProductionCompany } from '@/lib/types';
-import Image from 'next/image';
+import OptimizedImage from '@/components/OptimizedImage';
 import Link from 'next/link';
 
 interface MovieDetailsPageProps {
@@ -24,9 +24,9 @@ export default async function MovieDetailsPage({ params }: MovieDetailsPageProps
         <div className="min-h-screen bg-gray-900 text-white">
             {/* Hero Section with Background Image */}
             <div
-                className="relative h-[60vh] md:h-[70vh] bg-cover bg-center bg-no-repeat"
+                className="relative h-[50vh] md:h-[70vh] bg-cover bg-center bg-no-repeat"
                 style={{
-                    backgroundImage: `linear-gradient(to bottom, rgba(17, 24, 39, 0.5), rgba(17, 24, 39, 1)), url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`,
+                    backgroundImage: `linear-gradient(to bottom, rgba(17, 24, 39, 0.5), rgba(17, 24, 39, 1)), url(https://image.tmdb.org/t/p/w1280${movie.backdrop_path})`,
                 }}
             >
                 <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-12">
@@ -112,13 +112,16 @@ export default async function MovieDetailsPage({ params }: MovieDetailsPageProps
                                     {movie.credits.cast.slice(0, 10).map((actor: CastMember) => (
                                         <div key={actor.credit_id} className="text-center">
                                             {actor.profile_path ? (
-                                                <Image
-                                                    src={`https://image.tmdb.org/t/p/w185${actor.profile_path}`}
-                                                    alt={actor.name}
-                                                    width={100}
-                                                    height={150}
-                                                    className="rounded-lg mx-auto mb-1 object-cover"
-                                                />
+                                                <div className="w-[100px] h-[150px] mx-auto mb-1">
+                                                    <OptimizedImage
+                                                        src={`https://image.tmdb.org/t/p/w185${actor.profile_path}`}
+                                                        alt={actor.name}
+                                                        width={185}
+                                                        height={278}
+                                                        className="rounded-lg"
+                                                        aspectRatio="2/3"
+                                                    />
+                                                </div>
                                             ) : (
                                                 <div className="w-[100px] h-[150px] bg-gray-700 rounded-lg mx-auto flex items-center justify-center mb-1">
                                                     <span className="text-xs text-gray-400">No Image</span>
@@ -128,22 +131,6 @@ export default async function MovieDetailsPage({ params }: MovieDetailsPageProps
                                             <p className="text-xs text-gray-400">{actor.character}</p>
                                         </div>
                                     ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Trailer Section - if not in hero or for smaller screens */}
-                        {trailer && (
-                            <div className="mt-8 md:hidden">
-                                <h3 className="text-2xl font-semibold mb-4">Watch Trailer</h3>
-                                <div className="aspect-video">
-                                    <iframe
-                                        src={`https://www.youtube.com/embed/${trailer.key}`}
-                                        title={trailer.name}
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                        allowFullScreen
-                                        className="w-full h-full rounded-lg"
-                                    ></iframe>
                                 </div>
                             </div>
                         )}
@@ -165,25 +152,24 @@ export default async function MovieDetailsPage({ params }: MovieDetailsPageProps
                         {movie.production_companies && movie.production_companies.length > 0 && (
                             <div className="mt-6">
                                 <h3 className="text-xl font-semibold mb-3">Production</h3>
-                                <div className="flex flex-wrap gap-2">
-                                    {movie.production_companies.map((company: ProductionCompany) => (
-                                        company.logo_path ? (
-                                            <div key={company.id} className="flex items-center gap-1.5 px-2 py-1 bg-gray-800 rounded-md hover:bg-gray-700 transition-colors" title={company.name}>
-                                                <Image
-                                                    src={`https://image.tmdb.org/t/p/w92${company.logo_path}`}
-                                                    alt={company.name}
-                                                    width={20}
-                                                    height={20}
-                                                    className="object-contain h-4 w-auto max-w-6"
-                                                />
-                                                <span className="text-xs font-medium text-gray-200">{company.name}</span>
-                                            </div>
-                                        ) : (
-                                            <span key={company.id} className="text-xs px-2 py-1 bg-gray-800 rounded-md font-medium text-gray-200 hover:bg-gray-700 transition-colors">
-                                                {company.name}
-                                            </span>
-                                        )
-                                    ))}
+                                <div className="flex flex-wrap gap-2">                                        {movie.production_companies.map((company: ProductionCompany) => (
+                                            company.logo_path ? (
+                                                <div key={company.id} className="flex items-center gap-1.5 px-2 py-1 bg-gray-800 rounded-md hover:bg-gray-700 transition-colors" title={company.name}>
+                                                    <OptimizedImage
+                                                        src={`https://image.tmdb.org/t/p/w92${company.logo_path}`}
+                                                        alt={company.name}
+                                                        width={20}
+                                                        height={20}
+                                                        className="object-contain h-4 w-auto max-w-6"
+                                                    />
+                                                    <span className="text-xs font-medium text-gray-200">{company.name}</span>
+                                                </div>
+                                            ) : (
+                                                <span key={company.id} className="text-xs px-2 py-1 bg-gray-800 rounded-md font-medium text-gray-200 hover:bg-gray-700 transition-colors">
+                                                    {company.name}
+                                                </span>
+                                            )
+                                        ))}
                                 </div>
                             </div>
                         )}
