@@ -1,6 +1,6 @@
 import { getTVShowDetails, getSeasonDetails } from '@/lib/tmdb';
 import { Episode } from '@/lib/types';
-import Image from 'next/image';
+import OptimizedImage from '@/components/OptimizedImage';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
@@ -50,7 +50,7 @@ export default async function SeasonPage({ params }: SeasonPageProps) {
                             <div className="flex-shrink-0">
                                 <div className="w-48 md:w-56 lg:w-64 mx-auto md:mx-0">
                                     {seasonDetails.poster_path ? (
-                                        <Image
+                                        <OptimizedImage
                                             src={`https://image.tmdb.org/t/p/w500${seasonDetails.poster_path}`}
                                             alt={seasonDetails.name}
                                             width={500}
@@ -128,11 +128,12 @@ export default async function SeasonPage({ params }: SeasonPageProps) {
                                         <div className="flex-shrink-0">
                                             <div className="w-full lg:w-80 aspect-video relative rounded-lg overflow-hidden bg-gray-800">
                                                 {episode.still_path ? (
-                                                    <Image
+                                                    <OptimizedImage
                                                         src={`https://image.tmdb.org/t/p/w500${episode.still_path}`}
                                                         alt={episode.name}
-                                                        fill
-                                                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                                                        className="object-cover group-hover:scale-105 transition-transform duration-500 w-full h-full"
+                                                        width={500}
+                                                        height={281}
                                                     />
                                                 ) : (
                                                     <div className="w-full h-full flex items-center justify-center">
