@@ -1,13 +1,14 @@
-import Image from 'next/image';
+import OptimizedImage from './OptimizedImage';
 import Link from 'next/link';
 import { Movie, Series } from '@/lib/types';
 
 interface ContentCardProps {
   item: Movie | Series;
   type: 'movie' | 'tv';
+  priority?: boolean; // For above-the-fold images
 }
 
-export default function ContentCard({ item, type }: ContentCardProps) {
+export default function ContentCard({ item, type, priority = false }: ContentCardProps) {
   const title = type === 'movie' ? (item as Movie).title : (item as Series).name;
   const releaseDate = type === 'movie' ? (item as Movie).release_date : (item as Series).first_air_date;
   const year = releaseDate ? new Date(releaseDate).getFullYear() : 'N/A';
@@ -20,12 +21,14 @@ export default function ContentCard({ item, type }: ContentCardProps) {
       <div className="glass rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl hover:shadow-amber-500/20 transition-all duration-500 ease-out transform hover:-translate-y-2 hover:scale-105 border border-gray-700/50 hover:border-amber-500/30 animate-fade-in-up">
         <div className="relative aspect-[2/3] overflow-hidden">
           {item.poster_path ? (
-            <Image
-              src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
+            <OptimizedImage
+              src={`https://image.tmdb.org/t/p/w300${item.poster_path}`}
               alt={title}
-              fill
-              sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, (max-width: 1280px) 20vw, 15vw"
-              className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+              className="group-hover:scale-110 transition-transform duration-700 ease-out"
+              aspectRatio="2/3"
+              width={300}
+              height={450}
+              priority={priority}
             />
           ) : (
             <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
