@@ -75,6 +75,7 @@ export default function OptimizedImage({
 
   return (
     <div className="relative w-full h-full" style={{ aspectRatio }}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         ref={imgRef}
         src={src}
