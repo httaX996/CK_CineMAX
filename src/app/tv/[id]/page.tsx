@@ -99,7 +99,7 @@ export default async function TVShowDetailsPage({ params }: TVShowDetailsPagePro
                                                 <div className="relative aspect-[2/3] overflow-hidden">
                                                     {season.poster_path ? (
                                                         <OptimizedImage
-                                                            src={`https://image.tmdb.org/t/p/w300${season.poster_path}`}
+                                                            src={`https://image.tmdb.org/t/p/w185${season.poster_path}`}
                                                             alt={season.name}
                                                             width={300}
                                                             height={450}
