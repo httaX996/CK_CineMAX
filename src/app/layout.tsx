@@ -29,7 +29,9 @@ export default function RootLayout({
       <body className={`${inter.className} bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-gray-100 antialiased min-h-screen`}>
         <PerformanceOptimizer />
         <LayoutWrapper>
-          {children}
+          <div className="scroll-container">
+            {children}
+          </div>
         </LayoutWrapper>
       </body>
     </html>
