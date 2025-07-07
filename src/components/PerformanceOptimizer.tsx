@@ -38,7 +38,8 @@ export default function PerformanceOptimizer() {
         requestAnimationFrame(() => {
           // Force layout recalculation to prevent janky scrolling
           if (isMobile) {
-            document.body.offsetHeight; // Force reflow
+            // Force reflow by accessing offsetHeight
+            void document.body.offsetHeight;
           }
           ticking = false;
         });
