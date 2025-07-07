@@ -18,11 +18,11 @@ export default function ContentCard({ item, type, priority = false }: ContentCar
 
   return (
     <Link href={`${baseUrl}/${item.id}`} className="block group">
-      <div className="glass rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl hover:shadow-amber-500/20 transition-all duration-500 ease-out transform hover:-translate-y-2 hover:scale-105 border border-gray-700/50 hover:border-amber-500/30 animate-fade-in-up">
+      <div className="content-card glass rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl hover:shadow-amber-500/20 transition-all duration-500 ease-out transform hover:-translate-y-2 hover:scale-105 border border-gray-700/50 hover:border-amber-500/30 animate-fade-in-up">
         <div className="relative aspect-[2/3] overflow-hidden">
           {item.poster_path ? (
             <OptimizedImage
-              src={`https://image.tmdb.org/t/p/w300${item.poster_path}`}
+              src={`https://image.tmdb.org/t/p/w185${item.poster_path}`}
               alt={title}
               className="group-hover:scale-110 transition-transform duration-700 ease-out"
               aspectRatio="2/3"
