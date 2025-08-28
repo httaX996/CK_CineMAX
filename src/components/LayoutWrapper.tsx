@@ -37,11 +37,11 @@ export default function LayoutWrapper({ children }: LayoutWrapperProps) {
       <footer className="relative z-10 text-center py-12 border-t border-gray-700/30 glass">
         <div className="container mx-auto px-4">
           <p className="text-gray-400 mb-2">
-            &copy; {new Date().getFullYear()} Flixora. All rights reserved.
+            &copy; {new Date().getFullYear()} CK CineMAX. All rights reserved.
           </p>
           <p className="text-gray-500 text-sm">
-            Powered by{" "}
-            <span className="text-amber-400 font-semibold">TMDB</span>
+            Made By{" "}
+            <span className="text-amber-400 font-semibold">CHETHMINA</span>
           </p>
         </div>
       </footer>
