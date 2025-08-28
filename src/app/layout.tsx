@@ -6,7 +6,7 @@ import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Flixora - Stream Movies & Series",
+  title: "CK CineMAX - Stream Movies & Series",
   description:
     "Your ultimate destination for streaming movies and TV series. Discover trending content, top-rated films, and popular shows.",
   icons: {
