@@ -29,13 +29,13 @@ export default async function HomePage() {
           {/* Featured action buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up" style={{animationDelay: '0.4s'}}>
             <Link href="/movies" className="group px-8 py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-gray-900 font-bold rounded-xl hover:from-amber-400 hover:to-orange-400 transition-all duration-300 text-lg shadow-2xl hover:shadow-amber-500/50 transform hover:scale-105 flex items-center space-x-2">
-              <span>Browse Movies</span>
+              <span>Movies</span>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300">
                 <path fillRule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clipRule="evenodd" />
               </svg>
             </Link>
             <Link href="/tv" className="group px-8 py-4 glass border-2 border-amber-500/30 text-white font-bold rounded-xl hover:border-amber-400/50 hover:bg-amber-500/10 transition-all duration-300 text-lg shadow-xl transform hover:scale-105 flex items-center space-x-2">
-              <span>Watch TV Shows</span>
+              <span>TV Series</span>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300">
                 <path fillRule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clipRule="evenodd" />
               </svg>
